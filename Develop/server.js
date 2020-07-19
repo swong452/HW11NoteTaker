@@ -38,6 +38,9 @@ app.get('/api/notes', function (req, res) {
             let noteObj = JSON.parse(data);
             console.log("After json parse , noteObj is:", noteObj, typeof (noteObj));
             return res.json(noteObj);
+        } else {
+            noteObj =[];
+            return res.json(noteObj);
         }
     });
 })
@@ -49,16 +52,25 @@ app.post('/api/notes', function (req, res) {
     console.log("Posted new note Object:", newNote, typeof (newNote));
     notesArray.push(newNote);
     console.log("New note array list After Push is:", notesArray);
+
     // before write to a file, convert object into JSON Text 
     let notesArrayText = JSON.stringify(notesArray);
-
 
     fs.writeFile('./db/db.json', notesArrayText, function (err, data) {
         if (err) throw err;
         console.log("file saved");
+
+        // Question: it needs to return sth for the code to work
+        // but the subsequent .then does not really need any return of this call back
+        // what is the best practice to handle this ?
+        return res.json(notesArray); 
+        
+       
     });
+}) // end app.post
 
 
+app.delete('api/notes/:id', function (req,res) {
 
 })
 
