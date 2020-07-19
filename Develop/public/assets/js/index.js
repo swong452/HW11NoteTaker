@@ -1,33 +1,9 @@
-// Create express framework
-var express = require('express');
-vavr path = require("path");
-
-
-// tell node that we are creating an express server instance
-var app = express();
-var PORT = 3002;
-
-// setup express to handle JSON data parsing and obj/string
-app.use(express.urlencoded({extended:true}));
-app.use(express.json());
-
-// ================================================================================
-// ROUTER
-// The below points our server to a series of "route" files.
-// These routes give our server a "map" of how to respond when users visit or request data from various URLs.
-// ================================================================================
-
-app.get ('/notes', function (req, res) {
-  res.sendFile(path.join(__dirname,"notes.html"))
-})
-
-
-
 var $noteTitle = $(".note-title");
 var $noteText = $(".note-textarea");
 var $saveNoteBtn = $(".save-note");
 var $newNoteBtn = $(".new-note");
 var $noteList = $(".list-container .list-group");
+
 
 // activeNote is used to keep track of the note in the textarea
 var activeNote = {};
@@ -131,12 +107,15 @@ var handleRenderSaveBtn = function() {
 // Render's the list of note titles
 var renderNoteList = function(notes) {
   $noteList.empty();
+  console.log("enter renderNodeList", notes);
+
 
   var noteListItems = [];
 
   for (var i = 0; i < notes.length; i++) {
+    console.log("Note Length is: ", notes.length);
+    console.log("For Loop, each note is:", notes[i]);
     var note = notes[i];
-
     var $li = $("<li class='list-group-item'>").data(note);
     var $span = $("<span>").text(note.title);
     var $delBtn = $(
@@ -144,6 +123,7 @@ var renderNoteList = function(notes) {
     );
 
     $li.append($span, $delBtn);
+    
     noteListItems.push($li);
   }
 
@@ -152,7 +132,9 @@ var renderNoteList = function(notes) {
 
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
+  console.log("getAndRedner Note entered");
   return getNotes().then(function(data) {
+    console.log("Note data received back is:, ",data);
     renderNoteList(data);
   });
 };
