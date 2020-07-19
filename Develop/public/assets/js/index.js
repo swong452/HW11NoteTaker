@@ -7,6 +7,7 @@ var $noteList = $(".list-container .list-group");
 
 // activeNote is used to keep track of the note in the textarea
 var activeNote = {};
+//var noteID = 0;  // initialize note ID 
 
 // A function for getting all notes from the db
 var getNotes = function() {
@@ -57,6 +58,7 @@ var handleNoteSave = function() {
     text: $noteText.val()
   };
 
+  console.log("Index.js handleNoteSave function, ");
   saveNote(newNote).then(function(data) {
     getAndRenderNotes();
     renderActiveNote();
@@ -107,16 +109,16 @@ var handleRenderSaveBtn = function() {
 // Render's the list of note titles
 var renderNoteList = function(notes) {
   $noteList.empty();
-  console.log("enter renderNodeList", notes);
+  console.log("Enter renderNodeList function", notes);
 
 
   var noteListItems = [];
 
   for (var i = 0; i < notes.length; i++) {
-    console.log("Note Length is: ", notes.length);
-    console.log("For Loop, each note is:", notes[i]);
+    console.log("In renderNodeList function, notesArray Length is: ", notes.length);
+    console.log("each note is:", notes[i]);
     var note = notes[i];
-    var $li = $("<li class='list-group-item'>").data(note);
+    var $li = $("<li class='list-group-item'>").data(note).attr("data-index",i);
     var $span = $("<span>").text(note.title);
     var $delBtn = $(
       "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
