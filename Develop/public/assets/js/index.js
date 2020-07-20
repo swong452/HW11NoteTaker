@@ -26,13 +26,7 @@ var saveNote = function(note) {
   });
 };
 
-// A function for deleting a note from the db
-var deleteNote = function(id) {
-  return $.ajax({
-    url: "api/notes/" + id,
-    method: "DELETE"
-  });
-};
+
 
 
 // After user click on save note button, trigger this handle note save function
@@ -63,6 +57,7 @@ var handleNoteDelete = function(event) {
     .parent(".list-group-item")
     .data();
 
+  console.log("Clicked Delete on this note:", note)
   if (activeNote.id === note.id) {
     activeNote = {};
   }
@@ -72,6 +67,16 @@ var handleNoteDelete = function(event) {
     renderActiveNote();
   });
 };
+
+
+// A function for deleting a note from the db
+var deleteNote = function(id) {
+  return $.ajax({
+    url: "api/notes/" + id,
+    method: "DELETE"
+  });
+};
+
 
 // handleNoteView is called when user clicked on a historical note
 // Sets the activeNote and displays it
@@ -131,14 +136,13 @@ var renderNoteList = function(notes) {
     console.log("In renderNodeList function, notesArray Length is: ", notes.length);
     console.log("each note is:", notes[i]);
     var note = notes[i];
-    var $li = $("<li class='list-group-item'>").data(note).attr("id",i);
+    var $li = $("<li class='list-group-item'>").data(note);
     var $span = $("<span>").text(note.title);
     var $delBtn = $(
       "<i class='fas fa-trash-alt float-right text-danger delete-note'>"
     );
 
     $li.append($span, $delBtn);
-    
     noteListItems.push($li);
   }
 
@@ -147,9 +151,17 @@ var renderNoteList = function(notes) {
 
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
-  console.log("getAndRedner Note entered");
+  console.log("getAndRednerNote entered" );
   return getNotes().then(function(data) {
-    console.log("After getNotes, in this .then; data received back is: ", data);
+    //console.log("After getNotes, in this .then; data received back is: ", data, data.length);
+    
+    // get the max note ID so far. the new one is that + 1
+    var maxID = Math.max(...data.map(o=>o.id),0);
+    console.log("Calculated max ID of current list of note obj: ", maxID)
+
+    // maxID is current obj that has highest ID. Next one to be assigned
+    // Next one to be assigned = current maxID + 1
+    noteID = maxID + 1; 
     renderNoteList(data);
   });
 };
