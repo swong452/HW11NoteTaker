@@ -149,12 +149,13 @@ var renderNoteList = function(notes) {
   $noteList.append(noteListItems);
 };
 
+// 1st function being called when run index.html , or note.html.
 // Gets notes from the db and renders them to the sidebar
 var getAndRenderNotes = function() {
   console.log("getAndRednerNote entered" );
   return getNotes().then(function(data) {
     //console.log("After getNotes, in this .then; data received back is: ", data, data.length);
-    
+
     // get the max note ID so far. the new one is that + 1
     var maxID = Math.max(...data.map(o=>o.id),0);
     console.log("Calculated max ID of current list of note obj: ", maxID)

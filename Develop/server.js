@@ -34,8 +34,13 @@ app.get('/api/notes', function (req, res) {
         if (err) throw err;
         console.log("Read db.json file: current data is ", data, data.length);
         console.log("During Read db.json file: current notesArray is ", notesArray);
+
         if (data.length > 0) {
             let noteObj = JSON.parse(data);
+
+            // Every time we get notes; we set the notesArray conent = one from db.json parsed list of notes
+            notesArray = noteObj;
+
             console.log("After json parse , noteObj is:", noteObj, typeof (noteObj));
             return res.json(noteObj);
         } else {
@@ -86,7 +91,7 @@ app.delete('/api/notes/:id', function (req, res) {
 
         // Copy the content of this reduced array, to the current array 
         notesArray = noteObjRemain;
-        
+
         // save it back to db.json
 
         // before write to a file, convert object into JSON Text 
