@@ -4,7 +4,11 @@ var path = require("path");
 var fs = require('fs');
 
 var app = express();
-var PORT = 3002;
+// Static Port if run on my PC
+//var PORT = 3002;
+
+// Dynamic Port on Heroku
+var PORT = process.env.PORT || 3000;
 
 var notesArray = [];
 
