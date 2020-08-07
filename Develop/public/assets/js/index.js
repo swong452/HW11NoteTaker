@@ -53,6 +53,8 @@ var handleNoteDelete = function(event) {
   // prevents the click listener for the list from being called when the button inside of it is clicked
   event.stopPropagation();
 
+  // the delete icon parent, is the Li that has the notes detail
+  // extract that parent (li) .data.  .data () contains the noteObj, defined in renderNoteList ()
   var note = $(this)
     .parent(".list-group-item")
     .data();
@@ -128,7 +130,6 @@ var handleRenderSaveBtn = function() {
 var renderNoteList = function(notes) {
   $noteList.empty();
   console.log("Enter renderNodeList function", notes);
-
 
   var noteListItems = [];
 
